@@ -3,12 +3,9 @@ import {Effect, Actions, toPayload} from "@ngrx/effects";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 
-// import * as firebase from 'firebase';
-import {AngularFire} from "angularfire2";
-
 @Injectable()
 export class MainEffects {
-  constructor(private action$: Actions, private af: AngularFire) {
+  constructor(private action$: Actions) {
   }
 
   @Effect() update$ = this.action$
@@ -35,24 +32,6 @@ export class MainEffects {
           Observable.of({type: "TIMER_FINISHED"})
         )
     )
-
-  @Effect() pullArrayFromFirebase$ = this.action$
-    .ofType('PULL_ARRAY_FROM_FIREBASE')
-    .switchMap( () => {
-        return this.af.database.list('/cypherapp/rooms/')
-        .switchMap(result =>
-          Observable.of({type: "GOT_FIREBASE_ARRAY", payload: {pulledArray:  result}})
-          )
-    })
-
-  @Effect() pullObjectFromFirebase$ = this.action$
-    .ofType('PULL_OBJECT_FROM_FIREBASE')
-    .switchMap( () => {
-      return this.af.database.object('/cypherapp/rooms/')
-        .switchMap(result => {
-          return Observable.of({type: "GOT_FIREBASE_OBJECT", payload: {pulledObject: result}})
-        })
-    })
 
 
 }
